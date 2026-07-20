@@ -1,0 +1,16 @@
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+button {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #33333f;
+  background: #1c1c26;
+  color: inherit;
+  cursor: pointer;
+  margin-top: 12px;
+}
