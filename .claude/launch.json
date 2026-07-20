@@ -1,0 +1,41 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "01-exercise",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=01-components-jsx-exercise", "--", "--port", "5111"],
+      "port": 5111
+    },
+    {
+      "name": "01-solution",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=01-components-jsx-solution", "--", "--port", "5112"],
+      "port": 5112
+    },
+    {
+      "name": "01-complementary",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=01-components-jsx-complementary", "--", "--port", "5113"],
+      "port": 5113
+    },
+    {
+      "name": "02-exercise",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=02-state-and-reactivity-exercise", "--", "--port", "5121"],
+      "port": 5121
+    },
+    {
+      "name": "02-solution",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=02-state-and-reactivity-solution", "--", "--port", "5122"],
+      "port": 5122
+    },
+    {
+      "name": "02-complementary",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=02-state-and-reactivity-complementary", "--", "--port", "5123"],
+      "port": 5123
+    }
+  ]
+}

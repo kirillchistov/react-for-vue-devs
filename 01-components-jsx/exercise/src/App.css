@@ -1,0 +1,24 @@
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.ingredient-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 0;
+}
+
+.ingredient-card {
+  border: 1px solid #33333f;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.ingredient-card__image {
+  font-size: 2rem;
+}
