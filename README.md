@@ -35,9 +35,9 @@
 | [01-components-jsx](01-components-jsx) | Компоненты и JSX без магии шаблонов | капитан Рут |
 | [02-state-and-reactivity](02-state-and-reactivity) | Состояние: явные обновления вместо автослежения | старший инженер Хукс |
 | [03-use-effect](03-use-effect) | `useEffect` — не `watch` | лейтенант-коммандер Эффект |
-| 04-composition | Кастомные хуки и композиция вместо миксинов | лейтенант Композ |
-| 05-global-state | Глобальное состояние: Context и Redux Toolkit | дроид-квартирмейстер QM-9 «Редакс» |
-| 06-routing | Роутинг и модальные маршруты | штурман Роутер |
+| [04-composition](04-composition) | Кастомные хуки и композиция вместо миксинов | лейтенант Композ |
+| [05-global-state](05-global-state) | Глобальное состояние: Context и Redux Toolkit | дроид-квартирмейстер QM-9 «Редакс» |
+| [06-routing](06-routing) | Роутинг и модальные маршруты | штурман Роутер |
 | 07-forms-and-data | Формы и работа с сервером | энсин Форм |
 | 08-typescript | Продвинутый TypeScript: дженерики, типизация Redux | инспектор Тай |
 | 09-rendering-and-performance | Рендеринг, сверка (reconciliation) и оптимизации | старшина Рендер |

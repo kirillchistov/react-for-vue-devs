@@ -1,0 +1,18 @@
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app a {
+  color: #8ab4ff;
+}
+
+.app ul {
+  list-style: none;
+  padding: 0;
+}
+
+.app li {
+  margin-bottom: 16px;
+}

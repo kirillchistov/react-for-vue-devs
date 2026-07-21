@@ -1,0 +1,32 @@
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+button {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #33333f;
+  background: #1c1c26;
+  color: inherit;
+  cursor: pointer;
+  margin: 16px 0;
+}
+
+.card {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #33333f;
+}
+
+.card--dark {
+  background: #1c1c26;
+  color: #f2f2f5;
+}
+
+.card--light {
+  background: #f2f2f5;
+  color: #14141c;
+}

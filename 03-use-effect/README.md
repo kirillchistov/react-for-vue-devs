@@ -141,4 +141,4 @@ npm run dev                           # http://localhost:5173
 
 ---
 
-Дальше: модуль **04-composition** — как только появится в репозитории.
+Дальше: [04-composition](../04-composition).

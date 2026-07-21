@@ -1,5 +1,8 @@
 {
   "buildCommand": "npm run build:preview",
   "outputDirectory": "deploy",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "rewrites": [
+    { "source": "/:slug/app/:path*", "destination": "/:slug/app/index.html" }
+  ]
 }

@@ -1,0 +1,30 @@
+.details {
+  text-align: center;
+}
+
+.image {
+  font-size: 4rem;
+}
+
+.nutrition {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.nutrition div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nutrition dt {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.nutrition dd {
+  margin: 0;
+  font-weight: 600;
+}

@@ -1,0 +1,22 @@
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app > div {
+  margin-bottom: 24px;
+}
+
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #33333f;
+  background: #1c1c26;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1rem;
+}
