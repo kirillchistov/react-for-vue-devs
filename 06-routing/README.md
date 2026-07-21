@@ -125,4 +125,4 @@ npm run dev                       # http://localhost:5173
 
 ---
 
-Дальше: модуль **07-forms-and-data** — как только появится в репозитории.
+Дальше: [07-forms-and-data](../07-forms-and-data).

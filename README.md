@@ -38,10 +38,10 @@
 | [04-composition](04-composition) | Кастомные хуки и композиция вместо миксинов | лейтенант Композ |
 | [05-global-state](05-global-state) | Глобальное состояние: Context и Redux Toolkit | дроид-квартирмейстер QM-9 «Редакс» |
 | [06-routing](06-routing) | Роутинг и модальные маршруты | штурман Роутер |
-| 07-forms-and-data | Формы и работа с сервером | энсин Форм |
-| 08-typescript | Продвинутый TypeScript: дженерики, типизация Redux | инспектор Тай |
-| 09-rendering-and-performance | Рендеринг, сверка (reconciliation) и оптимизации | старшина Рендер |
-| 10-final-project | Запуск обновлённого терминала Stellar Burger | весь экипаж |
+| [07-forms-and-data](07-forms-and-data) | Формы и работа с сервером | энсин Форм |
+| [08-typescript](08-typescript) | Продвинутый TypeScript: дженерики, дискриминированные объединения | инспектор Тай |
+| [09-rendering-and-performance](09-rendering-and-performance) | Рендеринг, сверка (reconciliation) и оптимизации | старшина Рендер |
+| [10-final-project](10-final-project) | Запуск обновлённого терминала Stellar Burger | весь экипаж |
 
 Подробный бриф с задачами по каждому модулю и шпаргалка Vue → React — в [00-matching-terms](00-matching-terms/README.md). Начните оттуда.
 

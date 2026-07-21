@@ -1,0 +1,9 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #33333f;
+  border-radius: 6px;
+  padding: 8px;
+}
