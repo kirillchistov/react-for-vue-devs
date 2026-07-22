@@ -7,3 +7,6 @@ deploy
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
+
+# Local reference material only — third-party proprietary content, never commit
+tmp
