@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Вход — React для Vue-разработчиков</title>
+<link rel="stylesheet" href="/theme.css" />
+<script>
+(function(){
+  var stored = localStorage.getItem('theme');
+  var theme = stored === 'light' || stored === 'dark' ? stored : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .login-card {
+    width: min(360px, 90vw);
+    padding: 28px 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  .login-card h1 { font-size: 1.3rem; margin: 0 0 6px; }
+  .login-card p.sub { color: var(--text-soft); font-size: 0.88rem; margin: 0 0 18px; }
+  .login-field { display: block; margin-bottom: 14px; }
+  .login-field span { display: block; font-size: 0.82rem; color: var(--text-soft); margin-bottom: 4px; }
+  .login-field input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    font-size: 0.92rem;
+    font-family: inherit;
+  }
+  .login-field input:focus { outline: none; border-color: var(--accent); }
+  .login-submit {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .login-submit:hover { background: var(--accent-hover); }
+  .login-error {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+  }
+</style>
+</head>
+<body>
+  <form class="login-card" method="POST" action="/api/login">
+    <h1>🚀 Вход в курс</h1>
+    <p class="sub">Курс доступен только слушателям — введите имя и код доступа, которые вам выдали.</p>
+    <div id="login-error" class="login-error" hidden></div>
+    <label class="login-field">
+      <span>Имя</span>
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label class="login-field">
+      <span>Код доступа</span>
+      <input type="password" name="code" autocomplete="current-password" required />
+    </label>
+    <input type="hidden" name="next" id="login-next" value="/" />
+    <button type="submit" class="login-submit">Войти</button>
+  </form>
+  <script>
+    var params = new URLSearchParams(location.search);
+    var next = params.get('next');
+    if (next) document.getElementById('login-next').value = next;
+    var error = params.get('error');
+    if (error) {
+      var box = document.getElementById('login-error');
+      box.hidden = false;
+      box.textContent = error === 'not_configured'
+        ? 'Вход ещё не настроен на этом сервере — сообщите преподавателю.'
+        : 'Имя или код доступа не подошли — проверьте и попробуйте снова.';
+    }
+  </script>
+</body>
+</html>

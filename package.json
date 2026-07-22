@@ -11,6 +11,9 @@
     "test": "npm run test --workspaces --if-present",
     "build:preview": "bash scripts/build-preview.sh"
   },
+  "dependencies": {
+    "@vercel/functions": "^1.5.0"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",

@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync } from
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
+import { helpContent, focusResetTips } from './site-assets/help-content.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -49,6 +50,40 @@ function rewriteReadmeLinks(html) {
   return html.replace(/href="([^"]*)\/README\.md"/g, 'href="$1/"').replace(/href="README\.md"/g, 'href="./"');
 }
 
+function stripTags(html) {
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Gives every h1/h2/h3 a stable, page-local id (h1, h2, h3...) so search
+// results can deep-link straight to the matching heading, and collects the
+// plain-text heading list for the search index in the same pass.
+function addHeadingIds(html) {
+  let counter = 0;
+  const headings = [];
+  const withIds = html.replace(/<(h[1-3])>([\s\S]*?)<\/\1>/g, (full, tag, inner) => {
+    counter += 1;
+    const id = `h${counter}`;
+    headings.push({ id, text: stripTags(inner) });
+    return `<${tag} id="${id}">${inner}</${tag}>`;
+  });
+  return { html: withIds, headings };
+}
+
+function excerptOf(html, maxLen = 200) {
+  const text = stripTags(html);
+  if (text.length <= maxLen) return text;
+  const cut = text.slice(0, maxLen);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '…';
+}
+
 function iconSun() {
   return `<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`;
 }
@@ -61,7 +96,13 @@ function moduleGrid(modules) {
   const cards = modules
     .map((m) => {
       const num = /^\d\d-/.test(m.slug) ? m.slug.slice(0, 2) : null;
-      const badge = num ? `Модуль ${num}` : m.slug === 'assessment' ? 'Диагностика' : 'Старт';
+      const badge = num
+        ? `Модуль ${num}`
+        : m.slug === 'assessment'
+          ? 'Диагностика'
+          : m.slug === 'practicum-map'
+            ? 'Приложение'
+            : 'Старт';
       return `<a class="module-card" href="/${m.slug}/">
         <span class="module-card-num">${badge}</span>
         <div class="module-card-title">${marked.parseInline(m.topic)}</div>
@@ -83,6 +124,32 @@ function sidebarNav(modules, activeSlug) {
     <div class="sidebar-group">Модули</div>
     <ul>${items}</ul>
   </nav>`;
+}
+
+function claudeDeepLink(title) {
+  const prompt = `Я прохожу курс «React для Vue-разработчиков», модуль «${title}». Вот в чём затык:\n\n[опишите здесь, что не получается, и вставьте код/ошибку, если есть]`;
+  return `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
+}
+
+function helpPanel(slug, title) {
+  const tips = helpContent[slug];
+  if (!tips) return '';
+  const tipsHtml = tips.map((tip) => `<li>${marked.parseInline(tip)}</li>`).join('\n');
+  const resetHtml = focusResetTips.map((tip) => `<li>${marked.parseInline(tip)}</li>`).join('\n');
+  return `<button class="help-fab" aria-label="Нужна помощь?" aria-expanded="false" aria-controls="help-panel">🆘</button>
+  <aside class="help-panel" id="help-panel">
+    <div class="help-panel-header">
+      <strong>Застряли?</strong>
+      <button class="icon-btn help-panel-close" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="help-panel-body">
+      <h4>Частые затыки в этом модуле</h4>
+      <ul>${tipsHtml}</ul>
+      <h4>Быстрый сброс фокуса</h4>
+      <ul>${resetHtml}</ul>
+      <a class="help-claude-link" href="${claudeDeepLink(title)}" target="_blank" rel="noopener">Спросить Клода про этот модуль →</a>
+    </div>
+  </aside>`;
 }
 
 function pageNav(modules, activeSlug) {
@@ -121,6 +188,16 @@ function pageShell({ title, bodyHtml, isHub, appLink, modules, activeSlug }) {
         🚀 <span class="brand-full">React для Vue-разработчиков</span>
       </a>
     </div>
+    <div class="topbar-search">
+      <input
+        type="search"
+        class="site-search"
+        placeholder="Поиск по курсу… (/)"
+        aria-label="Поиск по курсу"
+        autocomplete="off"
+      />
+      <div class="search-results" hidden></div>
+    </div>
     <div class="topbar-actions">
       ${appLink ? `<a class="app-link" href="${appLink}">Открыть приложение →</a>` : ''}
       <button class="icon-btn theme-toggle" aria-label="Переключить тему">
@@ -136,6 +213,7 @@ function pageShell({ title, bodyHtml, isHub, appLink, modules, activeSlug }) {
       ${isHub ? '' : pageNav(modules, activeSlug)}
     </main>
   </div>
+  ${isHub ? '' : helpPanel(activeSlug, title)}
   <script src="/site.js" defer></script>
 </body>
 </html>
@@ -233,7 +311,7 @@ function linkifyModuleRefs(text) {
   return text.replace(/\*\*([\w-]+)\*\*/g, (full, slug) => `[**${slug}**](/${slug}/)`);
 }
 
-function renderOne(slug, dir, modules) {
+function renderOne(slug, dir, modules, searchEntries) {
   const readmePath = join(dir, 'README.md');
   const md = readFileSync(readmePath, 'utf-8');
   const isHub = slug === '';
@@ -251,11 +329,21 @@ function renderOne(slug, dir, modules) {
   }
   bodyHtml = rewriteReadmeLinks(bodyHtml);
 
+  const { html: bodyHtmlWithIds, headings } = addHeadingIds(bodyHtml);
+  searchEntries.push({ slug, title, headings, excerpt: excerptOf(bodyHtmlWithIds) });
+
   const outDir = isHub ? DEPLOY : join(DEPLOY, slug);
   mkdirSync(outDir, { recursive: true });
   writeFileSync(
     join(outDir, 'index.html'),
-    pageShell({ title, bodyHtml, isHub, appLink: hasApp ? `/${slug}/app/` : null, modules, activeSlug: slug }),
+    pageShell({
+      title,
+      bodyHtml: bodyHtmlWithIds,
+      isHub,
+      appLink: hasApp ? `/${slug}/app/` : null,
+      modules,
+      activeSlug: slug,
+    }),
   );
   console.log('Rendered theory page:', isHub ? '/ (hub)' : `/${slug}/`);
 }
@@ -263,9 +351,15 @@ function renderOne(slug, dir, modules) {
 mkdirSync(DEPLOY, { recursive: true });
 copyFileSync(join(ASSETS, 'theme.css'), join(DEPLOY, 'theme.css'));
 copyFileSync(join(ASSETS, 'site.js'), join(DEPLOY, 'site.js'));
+mkdirSync(join(DEPLOY, 'login'), { recursive: true });
+copyFileSync(join(ASSETS, 'login.html'), join(DEPLOY, 'login', 'index.html'));
 
 const modules = loadModules();
-renderOne('', ROOT, modules);
+const searchEntries = [];
+renderOne('', ROOT, modules, searchEntries);
 for (const m of modules) {
-  renderOne(m.slug, join(ROOT, m.slug), modules);
+  renderOne(m.slug, join(ROOT, m.slug), modules, searchEntries);
 }
+
+writeFileSync(join(DEPLOY, 'search-index.json'), JSON.stringify(searchEntries));
+console.log('Wrote search index:', searchEntries.length, 'pages');
